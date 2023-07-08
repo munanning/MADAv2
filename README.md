@@ -11,38 +11,34 @@ To address this issue, we firstly propose to introduce active sample selection t
 > Extensive experiments are conducted on public datasets, and the results demonstrate that the proposed approach outperforms state-of-the-art methods by large margins and achieves similar performance to the fully-supervised upperbound, *i.e.*, 71.4\% mIoU on GTA5 and 71.8\% mIoU on SYNTHIA.
 > The effectiveness of each component is also verified by thorough ablation studies. 
 
+![As shown in the figure, our features are perfectly distributed around the target centers, while traditional features of adversarial training tend to deviate from the real target distribution.](./img/visualization.png)
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [License](#license)
 - [Notes](#notes)
 
-## Introduction
-
-This respository contains the MADA method as described in the ICCV 2021 Oral paper ["Multi-Anchor Active Domain Adaptation for Semantic Segmentation"](https://arxiv.org/abs/2108.08012).
-
 ## Requirements
 
-The code requires Pytorch >= 0.4.1 with python 3.6. The code is trained using a NVIDIA Tesla V100 with 32 GB memory. You can simply reduce the batch size in stage 2 to run on a smaller memory.
+The code requires Pytorch >= 0.4.1 and faiss-cpu >= 1.7.2. The code is trained using a NVIDIA RTX3090 with 24GB memory.
 
 ## Usage
 
 1. Preparation:
 * Download the [GTA5](https://download.visinf.tu-darmstadt.de/data/from_games/) dataset as the source domain, and the [Cityscapes](https://www.cityscapes-dataset.com/) dataset as the target domain.
-* Download the [weights](https://drive.google.com/drive/folders/16DxIRuo06afRp2FpXvWg9nAeYiTL25yP?usp=sharing) and [features](https://drive.google.com/drive/folders/1ybhJUTh7y1QcOnpNz0jnxkpz5TTtO55s?usp=sharing). Move features to the MADA directory.
+* Download the [weights](https://drive.google.com/drive/folders/1Ln-fTBTivmMGJdRiVOi1774eBK_GMrhZ?usp=sharing) and [features](https://drive.google.com/drive/folders/17DMUHU97X5JPnEi9Hx8xWv-YYRDKdfie?usp=sharing). Move features to the MADAv2 directory.
 
 2. Setup the config files.
 * Set the data paths
 * Set the pretrained model paths
 
 3. Training-quick
-* To run the code with our weights and anchors (anchors/cluster_centroids_full_10.pkl):
+* To run the code with our weights and anchors:
 ~~~~
-python3 train_active_stage1.py
-python3 train_active_stage2.py
+python3 step1_train_active_sup_only.py
+python3 step2_train_active_semi_sup.py
 ~~~~
 * During the training, the generated files (log file) will be written in the folder 'runs/..'.
 
