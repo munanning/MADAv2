@@ -1,5 +1,5 @@
 # MADAv2
-Project for [[MADAv2: Advanced Multi-Anchor Based Active Domain Adaptation Segmentation](https://arxiv.org/abs/2301.07354)], which is modified from ICCV Oral 2021 [[Multi-Anchor Active Domain Adaptation for Semantic Segmentation](https://arxiv.org/abs/2108.08012)], and accepted by TPAMI.
+Project for [MADAv2: Advanced Multi-Anchor Based Active Domain Adaptation Segmentation](https://arxiv.org/abs/2301.07354), which is modified from ICCV Oral 2021 [Multi-Anchor Active Domain Adaptation for Semantic Segmentation](https://arxiv.org/abs/2108.08012), and accepted by TPAMI.
 
 > **Abstract.**
 > Unsupervised domain adaption has been widely adopted in tasks with scarce annotated data.
