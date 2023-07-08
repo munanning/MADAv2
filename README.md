@@ -31,11 +31,11 @@ The code requires Pytorch >= 0.4.1 and faiss-cpu >= 1.7.2. The code is trained u
 * Download the [GTA5](https://download.visinf.tu-darmstadt.de/data/from_games/) dataset as the source domain, and the [Cityscapes](https://www.cityscapes-dataset.com/) dataset as the target domain.
 * Download the [Weights](https://drive.google.com/drive/folders/1Ln-fTBTivmMGJdRiVOi1774eBK_GMrhZ?usp=sharing) and [Features](https://drive.google.com/drive/folders/17DMUHU97X5JPnEi9Hx8xWv-YYRDKdfie?usp=sharing). Move features to the MADAv2 directory.
 
-2. Setup the config files.
+2. Set up the config files.
 * Set the data paths
 * Set the pretrained model paths
 
-3. Training-quick
+3. Quickstart
 * To run the code with our weights and anchors:
 ~~~~
 python3 step1_train_active_sup_only.py
@@ -45,11 +45,10 @@ python3 step2_train_active_semi_sup.py
 
 4. Evaluation
 * Set the config file for test (configs/test_from_city_to_gta.yml):
-* Run:
+* Run test.py to see the results:
 ~~~~
 python3 test.py
 ~~~~
-to see the results.
 
 5. Training-whole process
 * Setting the config files.
