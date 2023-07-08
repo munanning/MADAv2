@@ -1,5 +1,5 @@
 # MADAv2
-Project for [MADAv2: Advanced Multi-Anchor Based Active Domain Adaptation Segmentation](https://arxiv.org/abs/2301.07354), which is modified from ICCV Oral 2021 [Multi-Anchor Active Domain Adaptation for Semantic Segmentation](https://arxiv.org/abs/2108.08012), and accepted by TPAMI.
+Project for [MADAv2: Advanced Multi-Anchor Based Active Domain Adaptation Segmentation](https://arxiv.org/abs/2301.07354) (accepted byTPAMI), which is modified from [Multi-Anchor Active Domain Adaptation for Semantic Segmentation](https://arxiv.org/abs/2108.08012) (ICCV Oral 2021).
 
 > **Abstract.**
 > Unsupervised domain adaption has been widely adopted in tasks with scarce annotated data.
@@ -11,7 +11,8 @@ To address this issue, we firstly propose to introduce active sample selection t
 > Extensive experiments are conducted on public datasets, and the results demonstrate that the proposed approach outperforms state-of-the-art methods by large margins and achieves similar performance to the fully-supervised upperbound, *i.e.*, 71.4\% mIoU on GTA5 and 71.8\% mIoU on SYNTHIA.
 > The effectiveness of each component is also verified by thorough ablation studies. 
 
-![As shown in the figure, our features are perfectly distributed around the target centers, while traditional features of adversarial training tend to deviate from the real target distribution.](./img/visualization.png)
+![](./img/visualization.png)
+As shown in the figure, our features are perfectly distributed around the target centers, while traditional features of adversarial training tend to deviate from the real target distribution.
 
 ## Table of Contents
 
@@ -28,7 +29,7 @@ The code requires Pytorch >= 0.4.1 and faiss-cpu >= 1.7.2. The code is trained u
 
 1. Preparation:
 * Download the [GTA5](https://download.visinf.tu-darmstadt.de/data/from_games/) dataset as the source domain, and the [Cityscapes](https://www.cityscapes-dataset.com/) dataset as the target domain.
-* Download the [weights](https://drive.google.com/drive/folders/1Ln-fTBTivmMGJdRiVOi1774eBK_GMrhZ?usp=sharing) and [features](https://drive.google.com/drive/folders/17DMUHU97X5JPnEi9Hx8xWv-YYRDKdfie?usp=sharing). Move features to the MADAv2 directory.
+* Download the [Weights](https://drive.google.com/drive/folders/1Ln-fTBTivmMGJdRiVOi1774eBK_GMrhZ?usp=sharing) and [Features](https://drive.google.com/drive/folders/17DMUHU97X5JPnEi9Hx8xWv-YYRDKdfie?usp=sharing). Move features to the MADAv2 directory.
 
 2. Setup the config files.
 * Set the data paths
@@ -53,35 +54,37 @@ to see the results.
 5. Training-whole process
 * Setting the config files.
 * Stage 1:
-* 1-save_feat_source.py: get the './features/full_dataset_objective_vectors.pkl'
+* 1-Save the features for source and target domains with the warmup model:
 ~~~~
-python3 save_feat_source.py
+python3 step1_save_feat_source.py
+python3 step1_save_feat_target_warmup.py
 ~~~~
-* 2-cluster_anchors_source.py: cluster the './features/full_dataset_objective_vectors.pkl' to './anchors/cluster_centroids_full_10.pkl'
+* 2-Cluster the features of source and target domains:
 ~~~~
-python3 cluster_anchors_source.py
+python3 step1_cluster_anchors_source.py
+python3 step1_cluster_anchors_target_warmup.py
 ~~~~
-* 3-select_active_samples.py: select active samples with './anchors/cluster_centroids_full_10.pkl' to 'stage1_cac_list_0.05.txt'
+* 3-Select the active samples by considering the distance from the both domains:
 ~~~~
-python3 select_active_samples.py
+python3 step1_select_active_samples.py
 ~~~~
-* 4-train_active_stage1.py: train stage1 model with anchors './anchors/cluster_centroids_full_10.pkl' and active samples 'stage1_cac_list_0.05.txt', get the 'from_gta5_to_cityscapes_on_deeplab101_best_model_stage1.pkl', which is stored in the runs/active_from_gta_to_city_stage1
+* 4-Training with the active samples:
 ~~~~
-python3 train_active_stage1.py
+python3 step1_train_active_sup_only.py
 ~~~~
 
 * Stage 2:
-* 1-save_feat_target.py: get the './features/target_full_dataset_objective_vectors.pkl.pkl'
+* 1-Save the features of target samples with the stage1 model:
 ~~~~
-python3 save_feat_target.py
+python3 step2_save_feat_target.py
 ~~~~
-* 2-cluster_anchors_target.py: cluster the './features/target_full_dataset_objective_vectors.pkl' to './anchors/cluster_centroids_full_target_10.pkl'
+* 2-Cluster the features of target samples:
 ~~~~
-python3 cluster_anchors_target.py
+python3 step2_cluster_anchors_target.py
 ~~~~
-* 3-train_active_stage2.py: train stage2 model with anchors './anchors/cluster_centroids_full_target_10.pkl' and active samples 'stage1_cac_list_0.05.txt', get the 'from_gta5_to_cityscapes_on_deeplab101_best_model_stage2.pkl'
+* 3-Training with the proposed semi-supervised domain adaptation strategy: 
 ~~~~
-python3 train_active_stage2.py
+python3 step2_train_active_semi_sup.py
 ~~~~
 
 
@@ -90,20 +93,19 @@ python3 train_active_stage2.py
 
 [MIT](LICENSE)
 
-The code is heavily borrowed from the CAG_UDA (https://github.com/RogerZhangzz/CAG_UDA).
+The code is heavily borrowed from the CAG_UDA (https://github.com/RogerZhangzz/CAG_UDA) and U2PL (https://github.com/Haochen-Wang409/U2PL).
 
 If you use this code and find it usefule, please cite:
 ~~~~
-@inproceedings{ning2021multi,
-  title={Multi-Anchor Active Domain Adaptation for Semantic Segmentation},
-  author={Ning, Munan and Lu, Donghuan and Wei, Dong and Bian, Cheng and Yuan, Chenglang and Yu, Shuang and Ma, Kai and Zheng, Yefeng},
-  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
-  pages={9112--9122},
-  year={2021}
+@article{ning2023madav2,
+  title={MADAv2: Advanced Multi-Anchor Based Active Domain Adaptation Segmentation},
+  author={Ning, Munan and Lu, Donghuan and Xie, Yujia and Chen, Dongdong and Wei, Dong and Zheng, Yefeng and Tian, Yonghong and Yan, Shuicheng and Yuan, Li},
+  journal={arXiv preprint arXiv:2301.07354},
+  year={2023}
 }
 ~~~~
 
 ## Notes
-The anchors are calcuated based on features captured by decoders.
+We also provide the results of D2ADA version in [Weights_D2ADA](https://drive.google.com/drive/folders/1pnSJZ-WWkYivdRokD9rteyPQ4DVWeGcu?usp=sharing).
 
-In this paper, we utilize the more powerful decoder in DeeplabV3+, it may cause somewhere unfair. So we strongly recommend the [ProDA](https://github.com/microsoft/ProDA) which utilize origin DeeplabV2 decoder.
+As you see, our framework is kind of out of date. If you want to continue in the research of domain adaptation, we recommend you to use the [D2ADA](https://github.com/tsunghan-wu/D2ADA) framework, which is more powerful and easy to use.
